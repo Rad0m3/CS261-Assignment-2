@@ -5,7 +5,9 @@
 # Due Date: 10/30/2024
 # Description: Implementation of the dynamic array data
 #              structure and associated methods
+from logging import raiseExceptions
 from tkinter.ttk import Label
+from turtledemo.penrose import start
 
 from static_array import StaticArray
 
@@ -237,14 +239,25 @@ class DynamicArray:
             DESCRIPTION:
 
         """
-        if size < 0 or start_index < 0:
-            raise DynamicArrayException
-
         sliced_array = DynamicArray()
-        for indices in range(size):
-            sliced_array[indices]
 
-        pass
+        #raises exception if start_index or size are not in
+        #the appropriate range
+
+        #if size is less than 0
+        #if start index is less than 0 or more than the array size
+        #if the index plus the size will go out of bounds of the array
+        if size < 0 or start_index < 0 or start_index > self._size - 1 or start_index + size > self._size:
+            raise DynamicArrayException
+        if size < 4:
+            sliced_array.resize(4)
+        else:
+            sliced_array.resize(size + 1)
+
+        for i in range(size):
+            sliced_array.append(self._data[i + start_index])
+
+        return sliced_array
 
     def map(self, map_func) -> "DynamicArray":
         """
@@ -254,10 +267,12 @@ class DynamicArray:
 
         """
 
-        """
-        TODO: Write this implementation
-        """
-        pass
+        output_array = DynamicArray()
+        output_array.resize(self._capacity)
+        for i in range(self._size):
+            output_array.insert_at_index(i, map_func(self._data[i]))
+
+        return output_array
 
     def filter(self, filter_func) -> "DynamicArray":
         """
@@ -267,10 +282,16 @@ class DynamicArray:
 
         """
 
-        """
-        TODO: Write this implementation
-        """
-        pass
+        output_array = DynamicArray()
+        output_array.resize(self._capacity)
+
+        for i in range(self._size):
+            if filter_func(self._data[i]):
+                output_array.append(self._data[i])
+        if output_array._size * 2 < 8:
+            output_array.resize(4)
+
+        return output_array
 
     def reduce(self, reduce_func, initializer=None) -> object:
         """
@@ -279,11 +300,22 @@ class DynamicArray:
             DESCRIPTION:
 
         """
+        # Check if the array is empty
+        if self._size == 0:
+            return initializer  # Return the initializer, or None if not provided
 
-        """
-        TODO: Write this implementation
-        """
-        pass
+        # Set initial value based on whether initializer is provided
+        value = initializer if initializer is not None else self._data[0]
+
+        # Start index depending on whether initializer is provided
+        start_index = 1 if initializer is None else 0
+
+        # Perform the reduction
+        for i in range(start_index, self._size):
+            element = self._data[i]
+            value = reduce_func(value, element)
+
+        return value
 
 
 def chunk(arr: DynamicArray) -> "DynamicArray":
