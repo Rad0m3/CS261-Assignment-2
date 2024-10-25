@@ -1,10 +1,11 @@
-# Name:
-# OSU Email:
+# Name: John Fletcher
+# OSU Email: fletjohn@oregonstate.edu
 # Course: CS261 - Data Structures
-# Assignment:
-# Due Date:
-# Description:
-
+# Assignment: Assignment 2
+# Due Date: 10/30/2024
+# Description: Implementation of the dynamic array data
+#              structure and associated methods
+from tkinter.ttk import Label
 
 from static_array import StaticArray
 
@@ -133,35 +134,126 @@ class DynamicArray:
 
     def resize(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        INPUTS: new_capacity [int]
+        RETURNS: NONE
+        DESCRIPTION: Function resizes array to the size of new_capacity
         """
-        pass
+
+        #check if new_capacity input is negative
+        if new_capacity <= 0:
+            return
+        elif new_capacity < self._size:
+            return
+        else:
+            dummy_array = StaticArray(new_capacity)
+
+            for data_index in range(self.length()):
+                dummy_array[data_index] = self._data[data_index]
+
+            self._capacity = new_capacity
+            self._data = dummy_array
+
 
     def append(self, value: object) -> None:
         """
-        TODO: Write this implementation
+            INPUTS: value [object]
+            RETURNS: NONE
+            DESCRIPTION: appends a given value to the data array and resizes
+                         the array to fit the new value
         """
-        pass
+        if self._size >= self._capacity:
+            self.resize(self._capacity * 2)
+
+        self._size += 1
+        self._data[self._size - 1] = value
 
     def insert_at_index(self, index: int, value: object) -> None:
         """
-        TODO: Write this implementation
+            INPUTS: index [int]
+                    value [object]
+            RETURNS:NONE
+            DESCRIPTION:inserts value at desired index and shifts all values above
+                        the index to the right one space to make room for the input
+                        value
+
         """
-        pass
+        if index < 0 or index > self._size:
+            raise DynamicArrayException
+
+
+        #resizes to 2x the original size if array is already full
+        if self._size == self._capacity:
+            self.resize(self._capacity * 2)
+
+        self._size += 1
+
+        #in-place shift right operation to update array and make space at desired
+        #index for the new value
+        for indices in range(self._size - index - 1):
+            index_shift = self._size - indices - 1
+            previous_value = self.get_at_index(index_shift - 1)
+            self.set_at_index(index_shift, previous_value)
+
+        #Sets value at desired index
+        self.set_at_index(index, value)
+
 
     def remove_at_index(self, index: int) -> None:
         """
-        TODO: Write this implementation
+            INPUTS: index [int]
+            RETURNS: NONE
+            DESCRIPTION: This function removes a value from an array and
+                         then shifts the contents of the array left for all
+                         values of index more than that of the index of the
+                         value that is being removed
+
         """
-        pass
+        #raises exception if index value is out of bounds
+        if index < 0 or index > self._size - 1:
+            raise DynamicArrayException
+
+        if self._size < 0.25 * self._capacity and self._capacity > 10:
+            #prevents array from being reduced to a size smaller than 10
+            if 10 <= int(self._capacity / 2):
+                self.resize(int(self._size * 2))
+            else:
+                self.resize(10)
+
+        #very similar to the in place shift right but now
+        #shifting values to the left instead
+        for indices in range(self._size - index - 1):
+            index_shift = indices + index
+            next_value = self.get_at_index(index_shift + 1)
+            self.set_at_index(index_shift, next_value)
+
+        #reduces array size by 1 since we have removed one element
+        self._size -= 1
+
 
     def slice(self, start_index: int, size: int) -> "DynamicArray":
         """
-        TODO: Write this implementation
+            INPUTS:
+            RETURNS:
+            DESCRIPTION:
+
         """
+        if size < 0 or start_index < 0:
+            raise DynamicArrayException
+
+        sliced_array = DynamicArray()
+        for indices in range(size):
+            sliced_array[indices]
+
         pass
 
     def map(self, map_func) -> "DynamicArray":
+        """
+            INPUTS:
+            RETURNS:
+            DESCRIPTION:
+
+        """
+
         """
         TODO: Write this implementation
         """
@@ -169,11 +261,25 @@ class DynamicArray:
 
     def filter(self, filter_func) -> "DynamicArray":
         """
+            INPUTS:
+            RETURNS:
+            DESCRIPTION:
+
+        """
+
+        """
         TODO: Write this implementation
         """
         pass
 
     def reduce(self, reduce_func, initializer=None) -> object:
+        """
+            INPUTS:
+            RETURNS:
+            DESCRIPTION:
+
+        """
+
         """
         TODO: Write this implementation
         """
@@ -182,12 +288,25 @@ class DynamicArray:
 
 def chunk(arr: DynamicArray) -> "DynamicArray":
     """
+        INPUTS:
+        RETURNS:
+        DESCRIPTION:
+
+    """
+
+    """
     TODO: Write this implementation
     """
     pass
 
 
 def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
+    """
+        INPUTS:
+        RETURNS:
+        DESCRIPTION:
+
+    """
     """
     TODO: Write this implementation
     """
