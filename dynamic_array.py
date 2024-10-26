@@ -231,29 +231,19 @@ class DynamicArray:
         #reduces array size by 1 since we have removed one element
         self._size -= 1
 
-
     def slice(self, start_index: int, size: int) -> "DynamicArray":
         """
-            INPUTS:
-            RETURNS:
-            DESCRIPTION:
-
+        Slices the current array starting from start_index and extending by size elements.
+        Returns a new DynamicArray containing the sliced elements.
         """
+        # Create a new DynamicArray for the slice
         sliced_array = DynamicArray()
 
-        #raises exception if start_index or size are not in
-        #the appropriate range
-
-        #if size is less than 0
-        #if start index is less than 0 or more than the array size
-        #if the index plus the size will go out of bounds of the array
+        # Raises an exception if start_index or size are out of range
         if size < 0 or start_index < 0 or start_index > self._size - 1 or start_index + size > self._size:
             raise DynamicArrayException
-        if size < 4:
-            sliced_array.resize(4)
-        else:
-            sliced_array.resize(size + 1)
 
+        # Append each element in the specified slice range to the new array
         for i in range(size):
             sliced_array.append(self._data[i + start_index])
 
