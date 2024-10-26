@@ -263,20 +263,20 @@ class DynamicArray:
 
     def filter(self, filter_func) -> "DynamicArray":
         """
-            INPUTS:
-            RETURNS:
-            DESCRIPTION:
-
+        Filters the DynamicArray based on the provided filter function and returns a new DynamicArray
+        containing only the elements that meet the filter criteria.
         """
-
         output_array = DynamicArray()
-        output_array.resize(self._capacity)
 
         for i in range(self._size):
             if filter_func(self._data[i]):
                 output_array.append(self._data[i])
-        if output_array._size * 2 < 8:
-            output_array.resize(4)
+
+        # Resize the output array to the actual number of elements added
+        if output_array.length() > 0:
+            output_array.resize(output_array.length())  # Resize to the actual size
+        else:
+            output_array.resize(4)  # Ensure minimum capacity if no elements
 
         return output_array
 
