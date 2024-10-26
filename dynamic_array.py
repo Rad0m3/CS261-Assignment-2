@@ -325,25 +325,70 @@ def chunk(arr: DynamicArray) -> "DynamicArray":
         DESCRIPTION:
 
     """
+    result = DynamicArray()
+    chunk_array = DynamicArray()
 
-    """
-    TODO: Write this implementation
-    """
-    pass
+    #appends first value in array to the chunk so that
+    #it doesnt get lost by the for loop
+    if arr.length() > 0:
+        # appends first value in array to the chunk so that
+        # it doesnt get lost by the for loop
+        chunk_array.append(arr[0])
+        for i in range(1, arr.length()):
+            # If non-descending, continue the chunk
+            if arr[i] >= arr[i - 1]:
+                chunk_array.append(arr[i])
+            else:
+                # Append current chunk to result
+                result.append(chunk_array)
+                # Start a new chunk with the current element
+                chunk_array = DynamicArray([arr[i]])
+
+        # Append the final chunk if not empty
+        if chunk_array.length() > 0:
+            result.append(chunk_array)
+
+    return result
+
 
 
 def find_mode(arr: DynamicArray) -> tuple[DynamicArray, int]:
     """
-        INPUTS:
-        RETURNS:
-        DESCRIPTION:
+    Finds the mode(s) of the sorted array `arr` and returns a tuple containing
+    a DynamicArray of the mode(s) and their frequency count.
+    """
+    mode_array = DynamicArray()  # Start with an empty DynamicArray for the modes
+    current_element = arr[0]
+    current_count = 1
+    max_count = 1
 
-    """
-    """
-    TODO: Write this implementation
-    """
-    pass
+    # Initialize mode array with the first element if max_count == 1
+    mode_array.append(current_element)
 
+    for i in range(1, arr.length()):
+        if arr[i] == current_element:
+            current_count += 1  # Increment count for the current element
+        else:
+            # If current count exceeds max, reset mode_array and update max_count
+            if current_count > max_count:
+                max_count = current_count
+                mode_array = DynamicArray()  # Reset mode_array
+                mode_array.append(current_element)  # Add the new mode
+            elif current_count == max_count and current_element != mode_array[0]:
+                mode_array.append(current_element)  # Add to mode_array if frequency matches max
+
+            # Update to the new element
+            current_element = arr[i]
+            current_count = 1
+
+    # Final check for the last element
+    if current_count > max_count:
+        mode_array = DynamicArray([current_element])  # Set the last element as mode
+        max_count = current_count
+    elif current_count == max_count:
+        mode_array.append(current_element)  # Add the last element if it matches max frequency
+
+    return mode_array, max_count
 
 # ------------------- BASIC TESTING -----------------------------------------
 
