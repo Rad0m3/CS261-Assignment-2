@@ -5,9 +5,9 @@
 # Due Date: 10/30/2024
 # Description: Implementation of the dynamic array data
 #              structure and associated methods
-from logging import raiseExceptions
+#from logging import raiseExceptions
 #from tkinter.ttk import Label
-from turtledemo.penrose import start
+#from turtledemo.penrose import start
 
 from static_array import StaticArray
 
