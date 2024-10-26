@@ -5,9 +5,6 @@
 # Due Date: 10/30/2024
 # Description: Implementation of the dynamic array data
 #              structure and associated methods
-#from logging import raiseExceptions
-#from tkinter.ttk import Label
-#from turtledemo.penrose import start
 
 from static_array import StaticArray
 
@@ -310,31 +307,27 @@ class DynamicArray:
 
 def chunk(arr: DynamicArray) -> "DynamicArray":
     """
-        INPUTS:
-        RETURNS:
-        DESCRIPTION:
-
+    Splits the input DynamicArray into chunks of non-descending sequences and returns a new DynamicArray.
     """
     result = DynamicArray()
     chunk_array = DynamicArray()
 
-    #appends first value in array to the chunk so that
-    #it doesnt get lost by the for loop
     if arr.length() > 0:
-        # appends first value in array to the chunk so that
-        # it doesnt get lost by the for loop
+        # Start the first chunk with the first element
         chunk_array.append(arr[0])
+
         for i in range(1, arr.length()):
-            # If non-descending, continue the chunk
+            # If non-descending, add to the current chunk
             if arr[i] >= arr[i - 1]:
                 chunk_array.append(arr[i])
             else:
-                # Append current chunk to result
+                # Append the completed chunk to result
                 result.append(chunk_array)
-                # Start a new chunk with the current element
-                chunk_array = DynamicArray([arr[i]])
+                # Start a new chunk with the current element (without using a list)
+                chunk_array = DynamicArray()
+                chunk_array.append(arr[i])
 
-        # Append the final chunk if not empty
+        # Append the last chunk if it exists
         if chunk_array.length() > 0:
             result.append(chunk_array)
 
